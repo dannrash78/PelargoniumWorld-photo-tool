@@ -1,18 +1,10 @@
-# PelargoniumWorld Photo Tool v3
+# PelargoniumWorld Photo Tool v4
 
-Инструмент за подготовка на снимки за PelargoniumWorld и Facebook.
+Static GitHub Pages photo editor for preparing PelargoniumWorld images.
 
-## Функции
-- качване на снимка;
-- избор на готов размер за сайта или Facebook;
-- избор на лого от списък;
-- размер, прозрачност и положение на логото;
-- директно влачене на логото върху preview;
-- воден знак в стила на снимките от сайта;
-- надпис „Пеларгониум Свят (Pelargonium World) ©“;
-- PNG/JPG export;
-- цялата обработка е локално в браузъра.
+Features: local image upload, site/Facebook presets, PelargoniumWorld logo selection, logo size/opacity/position, repeating diagonal watermark, on-image caption, PNG/JPG export, custom dimensions and touch drag.
+
+No backend is required and the uploaded photo is processed locally in the browser.
 
 ## GitHub Pages
-Качи съдържанието на папката така, че `index.html` да е в root на repository-то.
-В Settings → Pages избери Deploy from branch → main → / (root).
+Upload the contents of this folder to the repository root, then enable Pages from the `main` branch and `/root`.
