@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="bg">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="PelargoniumWorld Photo Tool — персонализирай снимка с логото на PelargoniumWorld.">
+  <title>PelargoniumWorld — Photo Tool</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <div class="brand">
+        <img src="assets/pelargoniumworld-logo.png" alt="PelargoniumWorld" class="brand-logo">
+        <div>
+          <h1>PelargoniumWorld Photo Tool</h1>
+          <p>Добави логото, воден знак и персонален надпис към своята снимка.</p>
+        </div>
+      </div>
+      <div class="top-actions">
+        <a href="https://pelargoniumworld.eu" target="_blank" rel="noopener">🌐 Сайт</a>
+        <a href="https://www.facebook.com/groups/pelargoniumworld" target="_blank" rel="noopener">👥 Facebook група</a>
+        <a href="https://www.facebook.com/pelargoniumworld.eu" target="_blank" rel="noopener">f Facebook страница</a>
+      </div>
+    </header>
+
+    <main class="workspace">
+      <section class="preview-card card">
+        <div class="preview-head">
+          <div>
+            <strong>Преглед</strong>
+            <span id="previewInfo">Качи снимка, за да започнеш.</span>
+          </div>
+          <div class="history-buttons">
+            <button id="undoBtn" class="icon-btn" title="Undo">↶</button>
+            <button id="redoBtn" class="icon-btn" title="Redo">↷</button>
+            <button id="resetBtn" class="icon-btn" title="Нулирай">⟳</button>
+          </div>
+        </div>
+        <div class="preview-wrap" id="previewWrap">
+          <div class="stage" id="stage">
+            <canvas id="canvas" width="1080" height="1080"></canvas>
+            <div class="selection-ui" id="selectionUi" aria-hidden="true">
+              <span class="handle nw" data-handle="nw"></span><span class="handle ne" data-handle="ne"></span>
+              <span class="handle sw" data-handle="sw"></span><span class="handle se" data-handle="se"></span>
+              <span class="rotation-handle" data-handle="rotate">↻</span>
+            </div>
+          </div>
+        </div>
+        <div class="hint">💡 Влачи снимката, логото, watermark-а или текста директно върху preview. Избраният елемент показва рамка и дръжки.</div>
+      </section>
+
+      <aside class="controls">
+        <section class="card section">
+          <h2>1. Снимка</h2>
+          <label class="file-drop">
+            <input id="photoInput" type="file" accept="image/*">
+            <span>📷 Избери снимка</span>
+            <small>Обработва се локално в браузъра.</small>
+          </label>
+          <div class="row"><label>Zoom</label><output id="photoZoomValue">100%</output></div>
+          <input id="photoZoom" type="range" min="50" max="300" value="100">
+          <div class="mini-grid">
+            <button data-photo-step="-10">− Намали</button><button data-photo-step="10">+ Увеличи</button>
+            <button id="photoReset">Reset</button><button data-photo-rotate="-90">↶ 90°</button>
+            <button data-photo-rotate="90">↷ 90°</button><button id="photoRotateReset">0°</button>
+          </div>
+          <div class="row"><label>Хоризонтално</label><output id="photoXValue">0</output></div>
+          <input id="photoX" type="range" min="-100" max="100" value="0">
+          <div class="row"><label>Вертикално</label><output id="photoYValue">0</output></div>
+          <input id="photoY" type="range" min="-100" max="100" value="0">
+          <div class="row"><label>Завъртане</label><output id="photoRotValue">0°</output></div>
+          <input id="photoRot" type="range" min="-180" max="180" value="0">
+        </section>
+
+        <section class="card section">
+          <div class="section-title-row"><h2>2. PelargoniumWorld лого</h2><label class="switch"><input id="logoEnabled" type="checkbox" checked><span></span></label></div>
+          <div class="asset-preview"><img src="assets/pelargoniumworld-logo.png" alt="PelargoniumWorld лого"></div>
+          <div class="row"><label>Размер</label><output id="logoSizeValue">32%</output></div>
+          <input id="logoSize" type="range" min="5" max="100" value="32">
+          <div class="row"><label>Прозрачност</label><output id="logoOpacityValue">100%</output></div>
+          <input id="logoOpacity" type="range" min="0" max="100" value="100">
+          <div class="row"><label>Хоризонтално</label><output id="logoXValue">0</output></div>
+          <input id="logoX" type="range" min="-100" max="100" value="0">
+          <div class="row"><label>Вертикално</label><output id="logoYValue">0</output></div>
+          <input id="logoY" type="range" min="-100" max="100" value="0">
+          <div class="row"><label>Завъртане</label><output id="logoRotValue">0°</output></div>
+          <input id="logoRot" type="range" min="-180" max="180" value="0">
+        </section>
+
+        <section class="card section">
+          <div class="section-title-row"><h2>3. Воден знак</h2><button id="removeWatermark" class="text-btn">Премахни</button></div>
+          <label class="file-drop compact"><input id="watermarkInput" type="file" accept="image/png,image/svg+xml,image/webp"><span>＋ Избери PNG / SVG / WebP</span></label>
+          <div id="watermarkControls" class="hidden">
+            <div class="row"><label>Размер</label><output id="wmSizeValue">25%</output></div>
+            <input id="wmSize" type="range" min="5" max="100" value="25">
+            <div class="row"><label>Прозрачност</label><output id="wmOpacityValue">45%</output></div>
+            <input id="wmOpacity" type="range" min="0" max="100" value="45">
+            <div class="row"><label>Хоризонтално</label><output id="wmXValue">0</output></div>
+            <input id="wmX" type="range" min="-100" max="100" value="0">
+            <div class="row"><label>Вертикално</label><output id="wmYValue">0</output></div>
+            <input id="wmY" type="range" min="-100" max="100" value="0">
+            <div class="row"><label>Завъртане</label><output id="wmRotValue">0°</output></div>
+            <input id="wmRot" type="range" min="-180" max="180" value="0">
+          </div>
+        </section>
+
+        <section class="card section">
+          <h2>4. Персонален надпис</h2>
+          <textarea id="customText" rows="3" placeholder="Напиши своя текст..."></textarea>
+          <div class="two-cols">
+            <label>Шрифт<select id="textFont"><option>Arial</option><option>Georgia</option><option>Verdana</option><option>Trebuchet MS</option><option>Courier New</option></select></label>
+            <label>Размер<input id="textSize" type="number" min="12" max="300" value="64"></label>
+          </div>
+          <div class="button-row"><button id="textBold">B</button><button id="textItalic"><i>I</i></button><label class="color-input">Цвят <input id="textColor" type="color" value="#ffffff"></label></div>
+          <div class="row"><label>Прозрачност</label><output id="textOpacityValue">100%</output></div>
+          <input id="textOpacity" type="range" min="0" max="100" value="100">
+          <div class="segmented"><button data-align="left">Ляво</button><button data-align="center" class="active">Център</button><button data-align="right">Дясно</button></div>
+          <label class="check"><input id="textBelow" type="checkbox"> Надпис под снимката</label>
+          <div id="textZoneControls" class="hidden">
+            <div class="row"><label>Височина на зоната</label><output id="textZoneValue">220 px</output></div>
+            <input id="textZone" type="range" min="100" max="600" value="220">
+            <label class="check"><input id="textBgEnabled" type="checkbox" checked> Фон на текстовата зона</label>
+            <input id="textBgColor" type="color" value="#ffffff">
+          </div>
+        </section>
+
+        <section class="card section">
+          <h2>5. Формат на изображението</h2>
+          <select id="formatPreset">
+            <option value="circle">Кръг / профилна — 1:1</option>
+            <option value="square">Facebook Square — 1:1</option>
+            <option value="portrait">Facebook Portrait — 4:5</option>
+            <option value="landscape">Facebook Landscape — 16:9</option>
+            <option value="website">Website — 1200 × 1200</option>
+            <option value="original">Оригинален размер</option>
+            <option value="custom">Custom</option>
+          </select>
+          <div id="customSize" class="two-cols hidden"><label>Width<input id="customW" type="number" min="100" max="8000" value="1200"></label><label>Height<input id="customH" type="number" min="100" max="8000" value="1200"></label></div>
+          <div class="row"><label>Фон</label><output id="bgValue">#FFFFFF</output></div>
+          <div class="button-row"><label class="color-input">Цвят <input id="bgColor" type="color" value="#ffffff"></label><label class="check inline"><input id="transparentBg" type="checkbox"> Прозрачен PNG</label></div>
+        </section>
+
+        <section class="card section export-card">
+          <h2>6. Свали готовото изображение</h2>
+          <div class="row"><label>JPG качество</label><output id="jpgQualityValue">90%</output></div>
+          <input id="jpgQuality" type="range" min="60" max="100" value="90">
+          <div class="export-buttons"><button id="downloadPng" class="primary">⬇ Свали PNG</button><button id="downloadJpg" class="orange">⬇ Свали JPG</button></div>
+          <p class="privacy">🔒 Снимката се обработва локално в браузъра и не се качва на сървър.</p>
+        </section>
+      </aside>
+    </main>
+  </div>
+  <script src="js/app.js"></script>
+</body>
+</html>
