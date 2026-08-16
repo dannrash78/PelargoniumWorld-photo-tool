@@ -1,19 +1,15 @@
-# PelargoniumWorld Photo Tool v6
+# PelargoniumWorld Photo Tool v7
 
-Инструмент за подготовка на снимки на пеларгонии за PelargoniumWorld и Facebook.
+GitHub Pages-ready static photo preparation tool.
 
-## Работен поток
-1. Качи снимка.
-2. Избери формат.
-3. Мести снимката спрямо рамката чрез плъзгачите или директно с drag върху preview.
-4. Избери и позиционирай логото.
-5. Добави водния знак.
-6. Добави надпис — център, ляво или дясно, с регулируем отстъп от края.
-7. Свали PNG или JPG.
+Flow:
+1. Upload a photo.
+2. The uploaded photo is immediately shown in a temporary preview, even before a format is selected.
+3. Choose the final format.
+4. Position the photo inside the selected frame.
+5. Add/position/resize PelargoniumWorld logo.
+6. Add watermark.
+7. Add text on the photo.
+8. Export PNG/JPG.
 
-Снимката се обработва локално в браузъра.
-
-Официални връзки:
-- https://pelargoniumworld.eu
-- https://www.facebook.com/groups/pelargoniumworld
-- https://www.facebook.com/pelargoniumworld.eu
+All image processing happens locally in the browser.
